@@ -16,23 +16,9 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
     @PostMapping("/register")
     public Customer resgisterCustomer(@RequestBody CustomerRequest customerRequest){
 
-        Customer customer = customerService.registerCustomer(customerRequest);
-
-        CustomerResponse customerResponse = restTemplate.getForObject(
-                "http://localhost:8081/api/v1/fraud/fraud-check/{customerId}",
-                CustomerResponse.class,
-                customer.getId()
-        );
-
-        if(customerResponse.getFraudster()){
-            throw new IllegalStateException("Fraud customer");
-        }
-        return customer;
+        return customerService.registerCustomer(customerRequest);
     }
 }

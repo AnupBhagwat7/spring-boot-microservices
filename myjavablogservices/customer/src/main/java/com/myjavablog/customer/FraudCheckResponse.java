@@ -2,13 +2,12 @@ package com.myjavablog.customer;
 
 import lombok.*;
 
-@Data
-@Builder
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class CustomerResponse {
+@NoArgsConstructor
+@Setter
+@Getter
+@Builder
+public class FraudCheckResponse {
 
     private Boolean fraudster;
 }

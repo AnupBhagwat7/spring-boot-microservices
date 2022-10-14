@@ -2,12 +2,16 @@ package com.myjavablog.customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     public Customer registerCustomer(CustomerRequest customerRequest) {
 
@@ -17,6 +21,18 @@ public class CustomerService {
                 .email(customerRequest.getEmail())
                 .build();
 
-        return customerRepository.save(customer);
+        Customer c = customerRepository.saveAndFlush(customer);
+
+        FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
+                "http://fraud/api/v1/fraud/fraud-check/{customerId}",
+                FraudCheckResponse.class,
+                c.getId()
+        );
+
+        if(fraudCheckResponse.getFraudster()){
+            throw new IllegalStateException("Fraud customer");
+        }
+
+        return c;
     }
 }

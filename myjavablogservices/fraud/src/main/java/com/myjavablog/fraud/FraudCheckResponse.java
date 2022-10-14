@@ -1,15 +1,13 @@
 package com.myjavablog.fraud;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FraudCheckResponse {
 
-    private Boolean isFarudster;
+    private boolean isFraudster;
 }
